@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boutique{% endblock %}
+
+{% block body %}
+    <div class="products-layout">
+        <aside class="filter-box">
+            <h3>Fourchette de prix</h3>
+            <ul style="list-style:none; padding-left:0; line-height:2;">
+                <li>10 à 29 €</li>
+                <li>30 à 35 €</li>
+                <li>35 à 50 €</li>
+            </ul>
+        </aside>
+
+        <section class="products-grid">
+            {% for product in products %}
+                <div class="product-card">
+                    <img src="{{ asset('images/' ~ product.image) }}" alt="{{ product.name }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>{{ product.price }} €</p>
+                    <a class="btn" href="{{ path('app_product_show', {id: product.id}) }}">Voir</a>
+                </div>
+            {% else %}
+                <p>Aucun produit disponible.</p>
+            {% endfor %}
+        </section>
+    </div>
+{% endblock %}

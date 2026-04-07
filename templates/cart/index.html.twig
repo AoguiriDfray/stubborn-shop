@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+    <h1>Panier</h1>
+
+    {% if items is not empty %}
+        {% for item in items %}
+            <div class="cart-item">
+                <div>
+                    <img src="{{ asset('images/' ~ item.product.image) }}" alt="{{ item.product.name }}">
+                </div>
+
+                <div>
+                    <p><strong>{{ item.product.name }}</strong></p>
+                    <p>Prix : {{ item.product.price }} €</p>
+                    <p>Taille : {{ item.size }}</p>
+                </div>
+
+                <div style="text-align:right;">
+                    <a class="btn" href="{{ path('app_cart_remove', {index: loop.index0}) }}">Retirer du panier</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="cart-summary">
+            <div class="btn">Total : {{ total }} €</div>
+
+            <form action="{{ path('app_cart_checkout') }}" method="post">
+                <button class="btn btn-danger" type="submit">Finaliser ma commande</button>
+            </form>
+
+            <a class="btn btn-success" href="{{ path('app_products') }}">Continuer mes achats</a>
+        </div>
+    {% else %}
+        <p>Votre panier est vide.</p>
+        <a class="btn" href="{{ path('app_products') }}">Voir les produits</a>
+    {% endif %}
+{% endblock %}

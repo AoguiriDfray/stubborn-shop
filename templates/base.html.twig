@@ -1,24 +1,330 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
-        {% endblock %}
+        <title>{% block title %}Stubborn{% endblock %}</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background: #f3f3f3;
+                color: #111;
+            }
 
-        {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
-        {% endblock %}
+            .container {
+                width: 95%;
+                max-width: 1400px;
+                margin: 0 auto;
+            }
 
-        {% set frankenphpHotReload = app.request.server.get('FRANKENPHP_HOT_RELOAD') %}
-        {% if frankenphpHotReload %}
-        <meta name="frankenphp-hot-reload:url" content="{{ frankenphpHotReload }}">
-        <script src="https://cdn.jsdelivr.net/npm/idiomorph"></script>
-        <script src="https://cdn.jsdelivr.net/npm/frankenphp-hot-reload/+esm" type="module"></script>
-        {% endif %}
+            header {
+                background: #fff;
+                border-bottom: 1px solid #ccc;
+                padding: 20px 0;
+            }
+
+            .header-inner {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .brand img {
+                max-height: 70px;
+                display: block;
+            }
+
+            .brand p {
+                margin: 6px 0 0;
+                font-size: 18px;
+            }
+
+            nav a {
+                margin-left: 24px;
+                text-decoration: none;
+                color: #111;
+                font-weight: 500;
+            }
+
+            nav a:hover {
+                text-decoration: underline;
+            }
+
+            .page-section {
+                padding: 40px 0;
+                min-height: 70vh;
+            }
+
+            footer {
+                background: #fff;
+                border-top: 1px solid #ccc;
+                padding: 25px 0;
+                margin-top: 40px;
+            }
+
+            .company-box {
+                border: 1px solid #ccc;
+                padding: 20px;
+                background: #fafafa;
+            }
+
+            .btn {
+                display: inline-block;
+                padding: 12px 22px;
+                border: 1px solid #222;
+                background: #fff;
+                color: #111;
+                text-decoration: none;
+                border-radius: 8px;
+                cursor: pointer;
+                font-weight: 600;
+            }
+
+            .btn:hover {
+                background: #111;
+                color: #fff;
+            }
+
+            .btn-danger {
+                background: #f6d5d5;
+                border-color: #d77;
+            }
+
+            .btn-success {
+                background: #dff0d8;
+                border-color: #8cbf7f;
+            }
+
+            .title-center {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .card-grid-3 {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 28px;
+            }
+
+            .product-card {
+                background: #fff;
+                border: 1px solid #ccc;
+                padding: 18px;
+                text-align: center;
+            }
+
+            .product-card img {
+                width: 100%;
+                height: 320px;
+                object-fit: cover;
+                display: block;
+                margin-bottom: 15px;
+            }
+
+            .product-card h3 {
+                margin: 10px 0 6px;
+            }
+
+            .product-card p {
+                margin: 6px 0;
+            }
+
+            .single-product {
+                display: grid;
+                grid-template-columns: 1.5fr 1fr;
+                gap: 40px;
+                background: #fff;
+                border: 1px solid #ccc;
+                padding: 28px;
+            }
+
+            .single-product img {
+                width: 100%;
+                max-width: 520px;
+                display: block;
+                object-fit: cover;
+            }
+
+            .form-card {
+                width: 100%;
+                max-width: 420px;
+                margin: 20px auto;
+                padding: 24px;
+                background: #fff;
+                border: 1px solid #ccc;
+            }
+
+            .form-card h1 {
+                margin-top: 0;
+            }
+
+            .form-card input,
+            .form-card select,
+            .form-card textarea {
+                width: 100%;
+                padding: 10px;
+                margin-top: 6px;
+                margin-bottom: 16px;
+                border: 1px solid #bbb;
+                box-sizing: border-box;
+            }
+
+            .cart-item {
+                display: grid;
+                grid-template-columns: 140px 1fr 180px;
+                gap: 20px;
+                align-items: center;
+                background: #fff;
+                border: 1px solid #ccc;
+                padding: 18px;
+                margin-bottom: 18px;
+            }
+
+            .cart-item img {
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+            }
+
+            .cart-summary {
+                display: flex;
+                justify-content: flex-end;
+                gap: 15px;
+                align-items: center;
+                margin-top: 25px;
+                flex-wrap: wrap;
+            }
+
+            .admin-add-box,
+            .admin-product-row {
+                background: #fff;
+                border: 1px solid #ccc;
+                padding: 18px;
+                margin-bottom: 18px;
+            }
+
+            .admin-add-box {
+                background: #f7dddd;
+            }
+
+            .admin-product-row img,
+            .admin-add-box img {
+                width: 120px;
+                height: 120px;
+                object-fit: cover;
+            }
+
+            .admin-grid {
+                display: grid;
+                grid-template-columns: 140px repeat(5, 1fr) 180px;
+                gap: 16px;
+                align-items: center;
+            }
+
+            .filter-box {
+                background: #fff;
+                border: 1px solid #ccc;
+                padding: 15px;
+            }
+
+            .products-layout {
+                display: grid;
+                grid-template-columns: 220px 1fr;
+                gap: 30px;
+                align-items: start;
+            }
+
+            .products-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 28px;
+            }
+
+            .small-muted {
+                color: #666;
+                font-size: 14px;
+            }
+
+            @media (max-width: 1000px) {
+                .card-grid-3,
+                .products-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .single-product,
+                .products-layout {
+                    grid-template-columns: 1fr;
+                }
+
+                .admin-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .header-inner {
+                    flex-direction: column;
+                    gap: 20px;
+                }
+
+                nav a {
+                    margin: 0 16px 0 0;
+                }
+            }
+
+            @media (max-width: 700px) {
+                .card-grid-3,
+                .products-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .cart-item {
+                    grid-template-columns: 1fr;
+                }
+            }
+        </style>
     </head>
     <body>
-        {% block body %}{% endblock %}
+        <header>
+            <div class="container header-inner">
+                <div class="brand">
+                    <img src="{{ asset('images/Logo.png') }}" alt="Stubborn">
+                    <p>Slogan</p>
+                </div>
+
+                <nav>
+                    <a href="{{ path('app_home') }}">Accueil</a>
+
+                    {% if app.user %}
+                        <a href="{{ path('app_products') }}">Boutique</a>
+                        <a href="{{ path('app_cart') }}">Panier</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('app_admin') }}">Back-Office</a>
+                        {% endif %}
+                        <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                    {% else %}
+                        <a href="{{ path('app_register') }}">S’inscrire</a>
+                        <a href="{{ path('app_login') }}">Se connecter</a>
+                    {% endif %}
+                </nav>
+            </div>
+        </header>
+
+        <main class="page-section">
+            <div class="container">
+                {% block body %}{% endblock %}
+            </div>
+        </main>
+
+        <footer>
+            <div class="container">
+                <div class="company-box">
+                    <strong>Informations de la société</strong>
+                    <p class="small-muted">
+                        Stubborn — Piccadilly Circus, London W1J 0DA, Royaume-Uni<br>
+                        Contact : stubborn@blabla.com<br>
+                        Slogan : Don't compromise on your look
+                    </p>
+                </div>
+            </div>
+        </footer>
     </body>
 </html>

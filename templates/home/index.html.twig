@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - Stubborn{% endblock %}
+
+{% block body %}
+    <h1 class="title-center">Bienvenue chez Stubborn</h1>
+
+    <div class="card-grid-3">
+        {% for product in featuredProducts %}
+            <div class="product-card">
+                <img src="{{ asset('images/' ~ product.image) }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.price }} €</p>
+
+                {% if app.user %}
+                    <a class="btn" href="{{ path('app_product_show', {id: product.id}) }}">Voir</a>
+                {% endif %}
+            </div>
+        {% else %}
+            <p>Aucun produit mis en avant pour le moment.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

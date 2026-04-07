@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Back Office{% endblock %}
+
+{% block body %}
+    <h1>Back Office</h1>
+
+    <div class="admin-add-box">
+        <h2>Ajouter un produit</h2>
+        <a class="btn" href="{{ path('app_admin_product_new') }}">+ Ajouter un produit</a>
+    </div>
+
+    <h2>Liste des produits</h2>
+
+    {% for product in products %}
+        <div class="admin-product-row">
+            <div class="admin-grid">
+                <img src="{{ asset('images/' ~ product.image) }}" alt="{{ product.name }}">
+
+                <input type="text" value="{{ product.name }}" disabled>
+                <input type="text" value="{{ product.description }}" disabled>
+                <input type="text" value="{{ product.price }}" disabled>
+                <input type="text" value="{{ product.stock }}" disabled>
+                <input type="text" value="{{ product.size }}" disabled>
+
+                <div>
+                    <a class="btn" href="{{ path('app_admin_product_edit', {id: product.id}) }}">Modifier</a>
+
+                    <form method="post" action="{{ path('app_admin_product_delete', {id: product.id}) }}" style="display:inline;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+                        <button class="btn" type="submit" onclick="return confirm('Supprimer ce produit ?')">Supprimer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p>Aucun produit.</p>
+    {% endfor %}
+{% endblock %}
